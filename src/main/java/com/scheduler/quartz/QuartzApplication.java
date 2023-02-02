@@ -50,7 +50,10 @@ public class QuartzApplication {
 					.withSchedule(CronScheduleBuilder.cronSchedule("0/20 * * * * ?").
 							withMisfireHandlingInstructionFireAndProceed().inTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)))
 					.build();
-
+			// delete old job
+			if (scheduler.checkExists(job.getKey())){
+				scheduler.deleteJob(job.getKey());
+			}
 			scheduler.scheduleJob(job, trigger);
 		};
 	}
