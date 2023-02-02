@@ -1,0 +1,10 @@
+yaml:
+  jobs:
+    - name: foo
+      aliases:
+        - abc
+        - xyz
+    - name: bar
+      aliases:
+        - data
+        - please

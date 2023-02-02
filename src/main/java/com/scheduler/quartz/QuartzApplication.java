@@ -1,8 +1,10 @@
 package com.scheduler.quartz;
 
+import com.scheduler.quartz.config.YamlFooProperties;
 import com.scheduler.quartz.jobs.SimpleJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,11 +16,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 @EnableScheduling
 @SpringBootApplication
 public class QuartzApplication {
+
+	@Autowired
+	private YamlFooProperties yamlFooProperties;
 
 	public static void main(String[] args) {
 
@@ -50,6 +56,7 @@ public class QuartzApplication {
 					.withSchedule(CronScheduleBuilder.cronSchedule("0/20 * * * * ?").
 							withMisfireHandlingInstructionFireAndProceed().inTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)))
 					.build();
+			yamlFooProperties.getJobs().size();
 			// delete old job
 			if (scheduler.checkExists(job.getKey())){
 				scheduler.deleteJob(job.getKey());
