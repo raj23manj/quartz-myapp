@@ -12,7 +12,9 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.TimeZone;
 
 @EnableScheduling
 @SpringBootApplication
@@ -35,12 +37,18 @@ public class QuartzApplication {
 		return (String[] args) -> {
 			JobDetail job = JobBuilder.newJob(SimpleJob.class)
 					.usingJobData("param", "value") // add a parameter
+					.withIdentity("myJob", "group1")
+					.withDescription("demo job")
 					.build();
 
-			Date afterFiveSeconds = Date.from(LocalDateTime.now().plusSeconds(5)
-					.atZone(ZoneId.systemDefault()).toInstant());
+//			Date afterFiveSeconds = Date.from(LocalDateTime.now().plusSeconds(5)
+//					.atZone(ZoneId.systemDefault()).toInstant());
 			Trigger trigger = TriggerBuilder.newTrigger()
-					.startAt(afterFiveSeconds)
+					.withIdentity("myTrigger", "group1")
+					.withDescription("demo job")
+					//.startAt(afterFiveSeconds)
+					.withSchedule(CronScheduleBuilder.cronSchedule("0/20 * * * * ?").
+							withMisfireHandlingInstructionFireAndProceed().inTimeZone(TimeZone.getTimeZone(ZoneOffset.UTC)))
 					.build();
 
 			scheduler.scheduleJob(job, trigger);
