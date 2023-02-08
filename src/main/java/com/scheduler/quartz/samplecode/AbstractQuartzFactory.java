@@ -1,8 +1,6 @@
 //package com.scheduler.quartz.samplecode;
 //
 //
-//import com.cybrilla.mf.oms.schedulers.data.QuartzJobData;
-//import com.cybrilla.mf.oms.utils.DateFormats;
 //import lombok.extern.slf4j.Slf4j;
 //import org.quartz.*;
 //import org.springframework.scheduling.quartz.SchedulerFactoryBean;
